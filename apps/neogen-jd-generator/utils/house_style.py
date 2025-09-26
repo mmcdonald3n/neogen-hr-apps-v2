@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+﻿from dataclasses import dataclass
 @dataclass(frozen=True)
 class HouseStyle:
     sections = ["Role Summary","Key Responsibilities","Required Qualifications","Preferred Qualifications","Core Competencies","Stakeholders","Work Location & Travel","Compensation & Benefits","Equal Opportunity Statement","How to Apply",]
@@ -7,3 +7,6 @@ class HouseStyle:
         "gender identity, national origin, disability, veteran status, or any other protected characteristic.")
     tone_default = "professional, clear, concise, no hype; avoid emojis"
 HOUSE_STYLE = HouseStyle()
+
+
+

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+﻿from pydantic import BaseModel, Field
 from typing import List, Optional
 class JDInputs(BaseModel):
     job_title: str; department: str
@@ -19,16 +19,16 @@ Write a Job Description for **{job_title}** in **{department}**{bu_clause}.
 - {'
 - '.join(summary_points) if summary_points else 'Summarise the role in 3-4 bullets.'}
 **Key Responsibilities**
-- Provide 8–12 responsibility bullets focused on outcomes.
+- Provide 8â€“12 responsibility bullets focused on outcomes.
 **Required Qualifications**
 - {'
-- '.join(must_have) if must_have else 'List 6–10 must-have requirements.'}
+- '.join(must_have) if must_have else 'List 6â€“10 must-have requirements.'}
 **Preferred Qualifications**
 - {'
-- '.join(nice_to_have) if nice_to_have else 'List 3–6 nice-to-have requirements.'}
+- '.join(nice_to_have) if nice_to_have else 'List 3â€“6 nice-to-have requirements.'}
 **Core Competencies**
 - {'
-- '.join(competencies) if competencies else 'List 5–8 competencies (e.g., collaboration, problem-solving).'}
+- '.join(competencies) if competencies else 'List 5â€“8 competencies (e.g., collaboration, problem-solving).'}
 **Stakeholders**
 - {'
 - '.join(stakeholders) if stakeholders else 'List typical cross-functional partners.'}
@@ -39,7 +39,7 @@ Write a Job Description for **{job_title}** in **{department}**{bu_clause}.
 **Equal Opportunity Statement**
 - {eoe_text}
 **How to Apply**
-- Provide the application method consistent with Neogen’s standard process.
+- Provide the application method consistent with Neogenâ€™s standard process.
 """
 def render_user_prompt(data: JDInputs, eoe_text: str) -> str:
     bu_clause = f" within {data.business_unit}" if data.business_unit else ""
@@ -54,3 +54,6 @@ def render_user_prompt(data: JDInputs, eoe_text: str) -> str:
         travel_clause=travel_clause, summary_points=data.summary_points, must_have=data.must_have,
         nice_to_have=data.nice_to_have, competencies=data.competencies, stakeholders=data.stakeholders,
         travel_text=travel_text, comp_text=comp_text, eoe_text=eoe_text)
+
+
+

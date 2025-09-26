@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+﻿from dataclasses import dataclass
 from pathlib import Path
 @dataclass(frozen=True)
 class Brand:
@@ -10,3 +10,6 @@ class Brand:
     light_bg: str = "#F5F7FA"
     logo_path: str = str(Path(__file__).resolve().parents[1] / "assets" / "neogen_logo.png")
 BRAND = Brand()
+
+
+

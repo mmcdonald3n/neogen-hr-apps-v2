@@ -1,43 +1,40 @@
-﻿import streamlit as st
-from shared.branding import show_logo_and_title
-from shared.house_style import hero_card
+﻿# -*- coding: utf-8 -*-
+import streamlit as st
+from utils.house_style import BRAND
+from pathlib import Path
 
-st.set_page_config(page_title="Neogen HR Suite", page_icon="🧪", layout="wide")
+st.set_page_config(page_title="Neogen Suite", page_icon=None, layout="wide")
 
-show_logo_and_title("Neogen HR Suite")
+st.title("Neogen Suite")
 
-st.write(
-    "Welcome to the Neogen HR Suite. Choose a tool below. You can plug in your House Styles later; "
-    "placeholders are ready for Policy Generator, Hiring Manager Toolkit, Interview Feedback Collector, and FitScore."
-)
-
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns([1,4])
 with col1:
-    hero_card("📄 Job Description Generator",
-              "Create well-structured JDs in Neogen style.",
-              page="1_Job_Description_Generator.py")
+    try:
+        import os
+        if os.path.exists(BRAND.logo_path) and os.path.getsize(BRAND.logo_path) > 0:
+            st.image(BRAND.logo_path, width=120)
+    except Exception:
+        pass
 with col2:
-    hero_card("❓ Interview Question Generator",
-              "Competency, role-specific and scenario questions.",
-              page="2_Interview_Question_Generator.py")
-with col3:
-    hero_card("📢 Job Advert Generator",
-              "Concise, inclusive adverts with bold sections and bullets.",
-              page="3_Job_Advert_Generator.py")
+    st.write("Welcome to the Neogen Suite. Use the sidebar or the tiles below.")
 
-col4, col5, col6 = st.columns(3)
-with col4:
-    hero_card("📚 Policy Generator (coming soon)",
-              "Multi-jurisdictional policies in your house style.",
-              page="4_Policy_Generator_placeholder.py")
-with col5:
-    hero_card("🧰 Hiring Manager Toolkit (coming soon)",
-              "Guides, rubrics, onboarding checklists.",
-              page="5_Hiring_Manager_Toolkit_placeholder.py")
-with col6:
-    hero_card("📝 Interview Feedback Collector (coming soon)",
-              "Structured scorecards; export to PDF/CSV.",
-              page="6_Interview_Feedback_Collector_placeholder.py")
+st.divider()
+st.subheader("Tools")
 
-st.markdown("---")
-st.caption("Model selection is set per page. Set your API key in Secrets as OPENAI_API_KEY.")
+# Tiles with page links (use script paths relative to repo root)
+c1, c2, c3 = st.columns(3)
+with c1:
+    st.markdown("### Job Description Generator")
+    st.page_link("pages/12_JD_Generator.py", label="Open JD Generator", icon="📄")
+with c2:
+    st.markdown("### Interview Question Generator")
+    st.page_link("pages/2_Interview_Question_Generator.py", label="Open IVQ Generator", icon="🗒️")
+with c3:
+    st.markdown("### Job Advert Generator")
+    st.page_link("pages/3_Job_Advert_Generator.py", label="Open Advert Generator", icon="📢")
+
+st.sidebar.header("Apps")
+st.sidebar.page_link("app.py", label="Home")
+st.sidebar.page_link("pages/12_JD_Generator.py", label="Job Description Generator")
+st.sidebar.page_link("pages/2_Interview_Question_Generator.py", label="Interview Question Generator")
+st.sidebar.page_link("pages/3_Job_Advert_Generator.py", label="Job Advert Generator")

@@ -1,4 +1,4 @@
-[server]
+﻿[server]
 headless = true
 runOnSave = true
 [browser]
@@ -13,3 +13,5 @@ textColor = "#111111"
 showSidebarNavigation = true
 [global]
 dataFrameSerialization = "legacy"
+
+
