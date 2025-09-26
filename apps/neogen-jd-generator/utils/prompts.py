@@ -56,3 +56,4 @@ def render_user_prompt(data: JDInputs, eoe_text: str) -> str:
         travel_text=travel_text, comp_text=comp_text, eoe_text=eoe_text)
 
 
+
