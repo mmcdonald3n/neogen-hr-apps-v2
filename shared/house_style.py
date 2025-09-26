@@ -1,12 +1,12 @@
-import streamlit as st
+﻿import streamlit as st
 from io import BytesIO
 
 def hero_card(title: str, desc: str, page: str) -> None:
     with st.container(border=True):
         st.markdown("**" + title + "**")
         st.caption(desc)
-        # no icon at all (most reliable on Streamlit Cloud)
-        st.page_link("pages/" + page, label="Open")
+        # No icon arg (avoids validation issues); arrow is part of the label text
+        st.page_link("pages/" + page, label="Open →")
 
 def section_box(heading: str, body_md: str, downloadable_name: str = "output.md") -> None:
     with st.container(border=True):
