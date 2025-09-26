@@ -1,4 +1,4 @@
-import os, json
+﻿import os, json
 from pathlib import Path
 import streamlit as st
 from pydantic import ValidationError
@@ -23,7 +23,7 @@ def llm_complete(system_prompt: str, user_prompt: str, model: str) -> str:
     return (data.get("output",{}).get("text")
         or (data.get("choices") or [{}])[0].get("message",{}).get("content")
         or (data.get("choices") or [{}])[0].get("text") or "")
-st.set_page_config(page_title="Neogen • Job Description Generator", page_icon="📄", layout="wide")
+st.set_page_config(page_title="Neogen â€¢ Job Description Generator", page_icon="ðŸ“„", layout="wide")
 left, right = st.columns([1,5])
 with left: st.image(BRAND.logo_path, width=140)
 with right:
@@ -52,7 +52,7 @@ with st.form("jd_form"):
         region = st.selectbox("Region", ["USA","Canada","EMEA","LATAM","APAC"], index=0)
         travel = st.text_input("Travel (optional)", placeholder="Up to 10%")
     with c3:
-        comp_band = st.text_input("Comp band (optional)", placeholder="e.g., M2 band, – base")
+        comp_band = st.text_input("Comp band (optional)", placeholder="e.g., M2 band, â€“ base")
         hiring_manager = st.text_input("Hiring Manager (optional)")
     st.markdown("### Key points (optional)")
     summary_points = st.tags_input("Role summary bullets", suggestions=["Own data pipelines","Partner with Product","Enable analytics at scale"])  # type: ignore
@@ -61,7 +61,7 @@ with st.form("jd_form"):
     competencies = st.tags_input("Core competencies", suggestions=["Collaboration","Problem-solving","Stakeholder management"])  # type: ignore
     stakeholders = st.tags_input("Stakeholders", suggestions=["Engineering","Product","HR","Finance"])  # type: ignore
     st.markdown("### Optional: refine with an existing JD")
-    existing_jd = st.text_area("Paste an existing JD (optional)", height=180, placeholder="Paste text to incorporate tone/points…")
+    existing_jd = st.text_area("Paste an existing JD (optional)", height=180, placeholder="Paste text to incorporate tone/pointsâ€¦")
     additional_notes = st.text_area("Any other notes (optional)", height=120)
     submitted = st.form_submit_button("Generate JD", use_container_width=True)
 jd_md = ""
@@ -78,8 +78,8 @@ if submitted:
     user_prompt = render_user_prompt(inputs, HOUSE_STYLE.equal_opportunity_text)
     if existing_jd: user_prompt += "\n\nIncorporate relevant strengths from the following existing JD while keeping the requested structure and tone:\n" + existing_jd
     if additional_notes: user_prompt += "\n\nAdditional notes from TA/HM to respect:\n" + additional_notes
-    with st.status("Generating…", expanded=True) as status:
-        st.write("Contacting model…")
+    with st.status("Generatingâ€¦", expanded=True) as status:
+        st.write("Contacting modelâ€¦")
         jd_md = llm_complete(SYSTEM_PROMPT, user_prompt, model=model)
         if not jd_md.strip(): st.error("No content returned from the model."); st.stop()
         status.update(label="Generation complete", state="complete")
@@ -93,10 +93,11 @@ if jd_md:
             st.code(jd_md, language="markdown"); st.toast("Scroll to copy the Markdown block.")
     with c2:
         if st.button("Export DOCX", use_container_width=True):
-            out = export_docx(jd_md, title=f"Job Description — {job_title}", out_path=Path("_out")/"jd.docx")
+            out = export_docx(jd_md, title=f"Job Description â€” {job_title}", out_path=Path("_out")/"jd.docx")
             with open(out, "rb") as f: st.download_button("Download .docx", f, file_name=f"Neogen_JD_{job_title.replace(' ','_')}.docx", use_container_width=True)
     with c3:
         if st.button("Export PDF", use_container_width=True):
-            out = export_pdf(jd_md, title=f"Job Description — {job_title}", out_path=Path("_out")/"jd.pdf")
+            out = export_pdf(jd_md, title=f"Job Description â€” {job_title}", out_path=Path("_out")/"jd.pdf")
             with open(out, "rb") as f: st.download_button("Download .pdf", f, file_name=f"Neogen_JD_{job_title.replace(' ','_')}.pdf", use_container_width=True)
-st.caption("© Neogen — internal TA tooling. Output intended for hiring workflows.")
+st.caption("Â© Neogen â€” internal TA tooling. Output intended for hiring workflows.")
+

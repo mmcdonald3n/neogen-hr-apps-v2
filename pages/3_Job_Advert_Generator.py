@@ -1,37 +1,63 @@
+ï»¿# -*- coding: utf-8 -*-
+import os
 import streamlit as st
-from shared.branding import show_logo_and_title, model_selector
-from shared.house_style import section_box
-from shared.utils import generate_text
-from shared.prompts import AD_SYSTEM_PROMPT
+from utils.house_style import BRAND, HOUSE_TONE
+from utils.jd_templates import BASE_SYSTEM_PROMPT
+from utils.openai_client import generate_markdown
+from utils.exporters import export_docx, export_markdown
 
-st.set_page_config(page_title="Job Advert Generator – Neogen", page_icon="??", layout="wide")
-show_logo_and_title("Job Advert Generator")
+st.set_page_config(page_title="Neogen â€” Job Advert Generator", page_icon=None, layout="wide")
 
-model = model_selector()
+left, right = st.columns([1,6])
+with left:
+    try:
+        if os.path.exists(BRAND.logo_path) and os.path.getsize(BRAND.logo_path) > 0:
+            st.image(BRAND.logo_path, width=110)
+    except Exception:
+        pass
+with right:
+    st.title("Job Advert Generator")
+    st.caption("Generate a short, compelling advert in Neogen house style")
 
-with st.form("ad_form"):
-    role_title = st.text_input("Role title*", placeholder="e.g., Senior Microbiologist")
-    location = st.text_input("Location", placeholder="e.g., Lansing, MI (Hybrid)")
-    pasted_jd = st.text_area("Paste the JD or key bullets*", height=220)
-    inclusive_checks = st.checkbox("Ensure inclusive, non-exclusionary language", value=True)
-    call_to_action = st.text_input("Call to action", value="Apply today to help protect the world’s food supply.")
-    submitted = st.form_submit_button("Generate Job Advert")
+st.sidebar.subheader("Model")
+model = st.sidebar.selectbox("Chat Model", ["gpt-4.1-mini", "gpt-4o-mini", "gpt-4.1"], index=0)
+
+with st.form("advert_form"):
+    st.markdown("### Role Details")
+    title = st.text_input("Job Title", "Senior Data Analyst")
+    location = st.text_input("Location", "Lansing, MI (Hybrid)")
+    department = st.text_input("Department", "Analytics")
+    summary = st.text_area("Summary of role", "We are looking for a data-driven professional...")
+
+    submitted = st.form_submit_button("Generate Advert", use_container_width=True)
 
 if submitted:
-    if not role_title.strip() or not pasted_jd.strip():
-        st.error("Please provide Role title and JD/bullets.")
-        st.stop()
+    with st.spinner("Generating advert..."):
+        prompt = f"""Write a concise job advert for the role below, in Neogen house style.
 
-    user_prompt = f"""
-Role Title: {role_title}
+Title: {title}
 Location: {location}
-Inclusive Language: {"Yes" if inclusive_checks else "No"}
-Call to Action: {call_to_action}
+Department: {department}
+Summary: {summary}
 
-JD/Bullets:
-{pasted_jd}
+Tone: {HOUSE_TONE}
 """
-    with st.spinner("Drafting a concise, compelling advert…"):
-        ad_text = generate_text(model=model, system=AD_SYSTEM_PROMPT, user=user_prompt, max_tokens=1000)
+        advert_md = generate_markdown(
+            [{"role": "system", "content": BASE_SYSTEM_PROMPT},
+             {"role": "user", "content": prompt}],
+            model=model
+        )
+        st.success("Advert ready.")
+        st.markdown(advert_md)
 
-    section_box("Neogen Job Advert", ad_text, downloadable_name=f"{role_title.replace(' ','_')}_Advert.md")
+        st.divider()
+        st.subheader("Export")
+        col_a, col_b = st.columns(2)
+        with col_a:
+            docx_buf = export_docx(title, advert_md)
+            st.download_button("Download Advert (DOCX)", data=docx_buf, file_name=f"{title.replace(' ', '_')}_Advert.docx", mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+        with col_b:
+            md_buf = export_markdown(advert_md)
+            st.download_button("Download Advert (Markdown)", data=md_buf, file_name=f"{title.replace(' ', '_')}_Advert.md", mime="text/markdown")
+
+

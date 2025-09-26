@@ -1,4 +1,4 @@
-from docx import Document
+﻿from docx import Document
 from docx.shared import Pt, Inches
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.oxml.shared import OxmlElement, qn
@@ -35,3 +35,4 @@ def export_docx(md_text: str, title: str, out_path: Path) -> Path:
             else:
                 p = doc.add_paragraph(block.strip()); p.paragraph_format.space_after = Pt(6)
     out_path.parent.mkdir(parents=True, exist_ok=True); doc.save(out_path); return out_path
+

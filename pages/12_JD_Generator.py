@@ -114,3 +114,5 @@ if submitted:
             st.download_button("Download JD (Markdown)", data=md_buf, file_name=f"{title.replace(' ', '_')}_JD.md", mime="text/markdown")
         with col_c:
             st.caption("PDF export available on request.")
+
+

@@ -1,4 +1,4 @@
-from fpdf import FPDF
+﻿from fpdf import FPDF
 from pathlib import Path
 from .branding import BRAND
 class PDF(FPDF):
@@ -20,8 +20,9 @@ def export_pdf(md_text: str, title: str, out_path: Path) -> Path:
         elif s.startswith('**'):
             text = s.replace('**',''); pdf.set_font('Helvetica', 'B', 12); pdf.multi_cell(0,6,text); pdf.ln(1); pdf.set_font('Helvetica','',11)
         elif s.startswith('- '):
-            pdf.cell(5); pdf.multi_cell(0, 5.5, '• ' + s[2:])
+            pdf.cell(5); pdf.multi_cell(0, 5.5, 'â€¢ ' + s[2:])
         else:
             if s == "": pdf.ln(2)
             else: pdf.multi_cell(0, 5.5, s)
     out_path.parent.mkdir(parents=True, exist_ok=True); pdf.output(str(out_path)); return out_path
+

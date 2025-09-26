@@ -41,3 +41,5 @@ HM_GUIDE_PROMPT = (
     "Draft concise hiring manager guidance for interviewing this role: 6–8 targeted questions, "
     "what good looks like, typical red flags, and suggested brief case exercise if appropriate."
 )
+
+

@@ -1,32 +1,101 @@
+﻿# -*- coding: utf-8 -*-
+import os
 import streamlit as st
-from shared.branding import show_logo_and_title, model_selector
-from shared.house_style import section_box
-from shared.utils import generate_text
-from shared.prompts import IVQ_SYSTEM_PROMPT
+from utils.house_style import BRAND, HOUSE_TONE
+from utils.openai_client import generate_markdown
+from utils.exporters import export_docx, export_markdown
 
-st.set_page_config(page_title="Interview Question Generator � Neogen", page_icon="?", layout="wide")
-show_logo_and_title("Interview Question Generator")
+st.set_page_config(page_title="Neogen — Interview Question Generator", page_icon=None, layout="wide")
 
-model = model_selector()
+left, right = st.columns([1,6])
+with left:
+    try:
+        if os.path.exists(BRAND.logo_path) and os.path.getsize(BRAND.logo_path) > 0:
+            st.image(BRAND.logo_path, width=110)
+    except Exception:
+        pass
+with right:
+    st.title("Interview Question Generator")
+    st.caption("Generate structured interview questions and what-good-looks-like in Neogen style")
+
+st.sidebar.subheader("Model")
+model = st.sidebar.selectbox("Chat Model", ["gpt-4.1-mini", "gpt-4o-mini", "gpt-4.1"], index=0)
 
 with st.form("ivq_form"):
-    pasted_jd = st.text_area("Paste the relevant JD or summary*", height=220, placeholder="Paste the JD or a concise summary of responsibilities and requirements�")
-    seniority = st.selectbox("Target Level", ["Entry", "Intermediate", "Senior", "Manager", "Director", "VP"], index=2)
-    focus = st.multiselect("Emphasis (choose any)", ["Technical depth","Leadership","Stakeholder mgmt","Regulatory/QA","Data/BI","Culture & values","Problem-solving","Communication"])
-    submitted = st.form_submit_button("Generate Questions")
+    st.markdown("### Inputs")
+    role_title = st.text_input("Job Title", "Senior Data Analyst")
+    seniority = st.selectbox("Seniority Level", ["Entry","Associate","Mid","Senior","Lead","Manager","Director"], index=3)
+    competencies = st.text_area(
+        "Key Competencies (bullets)",
+        "• Stakeholder communication\n• Problem solving\n• Data storytelling\n• Power BI & SQL",
+    )
+    must_haves = st.text_area(
+        "Must-haves (bullets)",
+        "• 3+ years with Power BI\n• SQL for data wrangling\n• Experience partnering with business stakeholders",
+    )
+    nice_to_haves = st.text_area(
+        "Nice-to-haves (bullets)",
+        "• Python for analysis\n• Exposure to life sciences / manufacturing",
+    )
+    jd_context = st.text_area(
+        "Optional JD/context paste (improves relevance)",
+        "",
+        height=130
+    )
+    submitted = st.form_submit_button("Generate Questions", use_container_width=True)
 
 if submitted:
-    if not pasted_jd.strip():
-        st.error("Please paste the JD or a short summary.")
-        st.stop()
-
-    user_prompt = f"""
+    with st.spinner("Generating interview questions..."):
+        sys = (
+            "You are an expert talent assessor for Neogen. Create structured interview materials:\n"
+            "- 8–12 questions grouped by competency\n"
+            "- For each question: what good looks like (bullet points), and red flags\n"
+            "- Include 1 short case/mini-exercise suggestion\n"
+            "- Keep the tone professional, inclusive, and concise.\n"
+            f"House tone: {HOUSE_TONE}\n"
+        )
+        user = f"""Role: {role_title}
 Seniority: {seniority}
-Focus Areas: {', '.join(focus) if focus else 'General'}
-JD/Summary:
-{pasted_jd}
-"""
-    with st.spinner("Creating tailored interview questions�"):
-        ivq_text = generate_text(model=model, system=IVQ_SYSTEM_PROMPT, user=user_prompt, max_tokens=1200)
+Competencies:
+{competencies}
 
-    section_box("Neogen Interview Question Set", ivq_text, downloadable_name="Interview_Questions.md")
+Must-haves:
+{must_haves}
+
+Nice-to-haves:
+{nice_to_haves}
+
+JD/Context (optional):
+{jd_context}
+"""
+
+        ivq_md = generate_markdown(
+            [{"role": "system", "content": sys},
+             {"role": "user", "content": user}],
+            model=model
+        )
+
+        st.success("Interview pack ready.")
+        st.markdown(ivq_md)
+
+        st.divider()
+        st.subheader("Export")
+        col1, col2 = st.columns(2)
+        with col1:
+            docx_buf = export_docx(f"{role_title} — Interview Pack", ivq_md)
+            st.download_button(
+                "Download Pack (DOCX)",
+                data=docx_buf,
+                file_name=f"{role_title.replace(' ', '_')}_Interview_Pack.docx",
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            )
+        with col2:
+            md_buf = export_markdown(ivq_md)
+            st.download_button(
+                "Download Pack (Markdown)",
+                data=md_buf,
+                file_name=f"{role_title.replace(' ', '_')}_Interview_Pack.md",
+                mime="text/markdown"
+            )
+
+

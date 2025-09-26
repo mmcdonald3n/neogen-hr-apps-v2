@@ -1,4 +1,4 @@
-[server]
+﻿[server]
 headless = true
 runOnSave = true
 [browser]

@@ -1,4 +1,4 @@
-import streamlit as st
+﻿import streamlit as st
 from typing import Optional
 
 def _get_client():
@@ -37,3 +37,5 @@ def generate_text(model: str, system: str, user: str, max_tokens: int = 1200) ->
         except Exception as e:
             st.error(f"Generation failed: {e}")
             return "?? Generation failed. Please check your API key, model name, or logs."
+
+

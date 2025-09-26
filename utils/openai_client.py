@@ -26,3 +26,5 @@ def generate_markdown(messages: List[dict], model: str = "gpt-4.1-mini") -> str:
         temperature=0.4,
     )
     return resp.choices[0].message.content.strip()
+
+

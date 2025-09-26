@@ -35,3 +35,5 @@ ABOUT_NEOGEN = (
 EEO_STATEMENT = (
     "Neogen is an Equal Opportunity Employer. We welcome applicants from all backgrounds and experiences."
 )
+
+
