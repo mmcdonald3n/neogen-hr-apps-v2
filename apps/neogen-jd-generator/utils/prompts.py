@@ -55,3 +55,4 @@ def render_user_prompt(data: JDInputs, eoe_text: str) -> str:
         nice_to_have=data.nice_to_have, competencies=data.competencies, stakeholders=data.stakeholders,
         travel_text=travel_text, comp_text=comp_text, eoe_text=eoe_text)
 
+

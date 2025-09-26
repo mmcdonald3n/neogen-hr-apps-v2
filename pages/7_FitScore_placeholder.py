@@ -5,3 +5,4 @@ show_logo_and_title("FitScore (coming soon)")
 st.info("Upload shortlists to get a concise executive summary and comparative FitScore.")
 
 
+

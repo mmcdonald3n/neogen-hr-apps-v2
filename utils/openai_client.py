@@ -28,3 +28,4 @@ def generate_markdown(messages: List[dict], model: str = "gpt-4.1-mini") -> str:
     return resp.choices[0].message.content.strip()
 
 
+

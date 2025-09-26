@@ -101,3 +101,4 @@ if jd_md:
             with open(out, "rb") as f: st.download_button("Download .pdf", f, file_name=f"Neogen_JD_{job_title.replace(' ','_')}.pdf", use_container_width=True)
 st.caption("Â© Neogen â€” internal TA tooling. Output intended for hiring workflows.")
 
+

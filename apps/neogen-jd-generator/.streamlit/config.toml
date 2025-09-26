@@ -13,3 +13,4 @@ textColor = "#111111"
 showSidebarNavigation = true
 [global]
 dataFrameSerialization = "legacy"
+

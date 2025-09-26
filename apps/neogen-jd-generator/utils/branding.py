@@ -11,3 +11,4 @@ class Brand:
     logo_path: str = str(Path(__file__).resolve().parents[1] / "assets" / "neogen_logo.png")
 BRAND = Brand()
 
+

@@ -8,3 +8,4 @@ class HouseStyle:
     tone_default = "professional, clear, concise, no hype; avoid emojis"
 HOUSE_STYLE = HouseStyle()
 
+

@@ -39,3 +39,4 @@ def generate_text(model: str, system: str, user: str, max_tokens: int = 1200) ->
             return "?? Generation failed. Please check your API key, model name, or logs."
 
 
+
