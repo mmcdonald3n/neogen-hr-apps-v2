@@ -5,7 +5,8 @@ def hero_card(title: str, desc: str, page: str):
     with st.container(border=True):
         st.markdown(f"**{title}**")
         st.caption(desc)
-        st.page_link(f"pages/{page}", label="Open", icon="?")
+        # no icon param to avoid emoji errors on Streamlit Cloud
+        st.page_link(f"pages/{page}", label="Open")
 
 def section_box(heading: str, body_md: str, downloadable_name: str = "output.md"):
     with st.container(border=True):
