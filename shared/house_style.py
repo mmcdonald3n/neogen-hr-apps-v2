@@ -5,8 +5,8 @@ def hero_card(title: str, desc: str, page: str) -> None:
     with st.container(border=True):
         st.markdown("**" + title + "**")
         st.caption(desc)
-        # single-character icon only
-        st.page_link("pages/" + page, label="Open", icon=">")
+        # no icon at all (most reliable on Streamlit Cloud)
+        st.page_link("pages/" + page, label="Open")
 
 def section_box(heading: str, body_md: str, downloadable_name: str = "output.md") -> None:
     with st.container(border=True):
