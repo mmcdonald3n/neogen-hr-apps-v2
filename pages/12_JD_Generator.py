@@ -1,17 +1,20 @@
-﻿import streamlit as st
+﻿# -*- coding: utf-8 -*-
+import os
+import streamlit as st
 from utils.house_style import BRAND, HOUSE_TONE
 from utils.jd_templates import BASE_SYSTEM_PROMPT, build_user_prompt, ADVERT_PROMPT, HM_GUIDE_PROMPT
 from utils.openai_client import generate_markdown
 from utils.exporters import export_docx, export_markdown
 
-st.set_page_config(page_title="Neogen — JD Generator", page_icon="📄", layout="wide")
+st.set_page_config(page_title="Neogen — JD Generator", page_icon=None, layout="wide")
 
 left, right = st.columns([1,6])
 with left:
     try:
-        st.image(BRAND.logo_path, width=110)
+        if os.path.exists(BRAND.logo_path) and os.path.getsize(BRAND.logo_path) > 0:
+            st.image(BRAND.logo_path, width=110)
     except Exception:
-        st.write("")
+        pass
 with right:
     st.title("Job Description Generator")
     st.caption("Neogen-branded output with consistent house style and exports")
@@ -72,30 +75,30 @@ if submitted:
             "tone": tone,
         }
 
-        jd_md = generate_markdown([
-            {"role": "system", "content": BASE_SYSTEM_PROMPT},
-            {"role": "user", "content": build_user_prompt(inputs)},
-        ], model=model)
-
+        jd_md = generate_markdown(
+            [{"role": "system", "content": BASE_SYSTEM_PROMPT},
+             {"role": "user", "content": build_user_prompt(inputs)}],
+            model=model
+        )
         st.success("Full JD ready.")
         st.markdown(jd_md)
 
-        advert_md = None
         if produce_advert:
-            advert_md = generate_markdown([
-                {"role": "system", "content": BASE_SYSTEM_PROMPT},
-                {"role": "user", "content": build_user_prompt(inputs) + "\n\n" + ADVERT_PROMPT},
-            ], model=model)
+            advert_md = generate_markdown(
+                [{"role": "system", "content": BASE_SYSTEM_PROMPT},
+                 {"role": "user", "content": build_user_prompt(inputs) + "\n\n" + ADVERT_PROMPT}],
+                model=model
+            )
             st.divider()
             st.subheader("Short Job Advert")
             st.markdown(advert_md)
 
-        hm_md = None
         if produce_hmguide:
-            hm_md = generate_markdown([
-                {"role": "system", "content": BASE_SYSTEM_PROMPT},
-                {"role": "user", "content": build_user_prompt(inputs) + "\n\n" + HM_GUIDE_PROMPT},
-            ], model=model)
+            hm_md = generate_markdown(
+                [{"role": "system", "content": BASE_SYSTEM_PROMPT},
+                 {"role": "user", "content": build_user_prompt(inputs) + "\n\n" + HM_GUIDE_PROMPT}],
+                model=model
+            )
             st.divider()
             st.subheader("Hiring Manager Guidance")
             st.markdown(hm_md)
