@@ -1,11 +1,6 @@
 ﻿__pycache__/
 *.pyc
-.venv/
 .env
 .streamlit/secrets.toml
-.DS_Store
-Thumbs.db
-exports/
-*.docx
-*.pdf
-*.md
+*.xlsx
+*.csv

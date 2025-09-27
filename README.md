@@ -1,12 +1,9 @@
-﻿# Neogen Suite — Job Description Generator
+﻿# Neogen Suite
 
-Adds a Neogen-branded Job Description Generator as a first-class page.
+Streamlit multi-page app with **7 HR tools**.
 
-## Quick start
-1) Ensure `.streamlit/secrets.toml` contains `OPENAI_API_KEY = "..."`.
-2) `python -m venv .venv && .\.venv\Scripts\Activate.ps1`
-3) `pip install -r requirements.txt`
-4) `streamlit run app.py`
-
-
-
+Structure
+- `app.py` — Home (tiles for all 7 apps)
+- `pages/01_*` … `pages/07_*` — individual tools
+- `utils/brand.py` — shared header/footer
+- `.streamlit/config.toml` — theme
