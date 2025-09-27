@@ -1,12 +1,6 @@
-﻿[theme]
-primaryColor="#0060A9"
-backgroundColor="#FFFFFF"
-secondaryBackgroundColor="#F5F7FA"
-textColor="#1B1F23"
-font="sans serif"
-
-[client]
-toolbarMode = "minimal"
-
-[server]
-runOnSave = true
+[theme]
+base = "light"
+primaryColor = "#0060A9"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F5F7FA"
+textColor = "#1B1F23"
